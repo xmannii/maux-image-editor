@@ -58,6 +58,12 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
   const [baseAspect, setBaseAspect] = useState<number>(1);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const getMaxDims = useCallback(() => {
+    const w = imageSize?.w ?? getCurrentCanvas?.()?.width ?? 0;
+    const h = imageSize?.h ?? getCurrentCanvas?.()?.height ?? 0;
+    return { maxW: Math.max(0, w), maxH: Math.max(0, h) };
+  }, [imageSize?.w, imageSize?.h, getCurrentCanvas]);
+
   const onFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (f && f.type.startsWith("image/")) onSelectFile(f);
@@ -93,22 +99,46 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
   }, [imageSize?.w, imageSize?.h, getCurrentCanvas]);
 
   const handleWidthInput = (raw: string) => {
-    // Allow empty while typing
-    const cleaned = raw.replace(/[^0-9]/g, "");
-    setWidthStr(cleaned);
+    // Normalize Persian digits to ASCII and allow empty while typing
+    const normalized = raw.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)));
+    const cleaned = normalized.replace(/[^0-9]/g, "");
+    if (cleaned === "") {
+      setWidthStr("");
+      return;
+    }
     const num = parseInt(cleaned, 10);
-    if (!isNaN(num) && num > 0 && locked && baseAspect > 0) {
-      const newH = Math.max(1, Math.round(num / baseAspect));
+    const { maxW, maxH } = getMaxDims();
+    let finalW = num;
+    if (maxW > 0) finalW = Math.min(finalW, maxW);
+    if (locked && baseAspect > 0 && maxH > 0) {
+      const maxWidthByHeight = Math.round(maxH * baseAspect);
+      finalW = Math.min(finalW, maxWidthByHeight);
+    }
+    setWidthStr(String(finalW));
+    if (locked && baseAspect > 0) {
+      const newH = Math.max(1, Math.round(finalW / baseAspect));
       setHeightStr(String(newH));
     }
   };
 
   const handleHeightInput = (raw: string) => {
-    const cleaned = raw.replace(/[^0-9]/g, "");
-    setHeightStr(cleaned);
+    const normalized = raw.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)));
+    const cleaned = normalized.replace(/[^0-9]/g, "");
+    if (cleaned === "") {
+      setHeightStr("");
+      return;
+    }
     const num = parseInt(cleaned, 10);
-    if (!isNaN(num) && num > 0 && locked && baseAspect > 0) {
-      const newW = Math.max(1, Math.round(num * baseAspect));
+    const { maxW, maxH } = getMaxDims();
+    let finalH = num;
+    if (maxH > 0) finalH = Math.min(finalH, maxH);
+    if (locked && baseAspect > 0 && maxW > 0) {
+      const maxHeightByWidth = Math.round(maxW / baseAspect);
+      finalH = Math.min(finalH, maxHeightByWidth);
+    }
+    setHeightStr(String(finalH));
+    if (locked && baseAspect > 0) {
+      const newW = Math.max(1, Math.round(finalH * baseAspect));
       setWidthStr(String(newW));
     }
   };
@@ -224,8 +254,8 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
                     <Input
                       inputMode="numeric"
                       className="text-center bg-muted/50 border rounded-lg text-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                      value={convertToPersianNumber(parseInt(widthStr))}
-                      onChange={(e) => handleWidthInput(convertToPersianNumber(parseInt(e.target.value)))}
+                      value={widthStr}
+                      onChange={(e) => handleWidthInput(e.target.value)}
                       placeholder="عرض"
                     />
                     <Button
@@ -241,8 +271,8 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
                     <Input
                       inputMode="numeric"
                       className="text-center bg-muted/50 border rounded-lg text-primary [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                      value={convertToPersianNumber(parseInt(heightStr))}
-                      onChange={(e) => handleHeightInput(convertToPersianNumber(parseInt(e.target.value)))}
+                      value={heightStr}
+                      onChange={(e) => handleHeightInput(e.target.value)}
                       placeholder="ارتفاع"
                     />
                   </div>

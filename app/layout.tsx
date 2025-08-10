@@ -16,8 +16,58 @@ const yekan = localFont({
   variable: "--font-yekan",
 });
 export const metadata: Metadata = {
-  title: "ماکس | ابزار ادیت عکس ",
-  description: "ابزار ادیت عکس",
+  title: {
+    default: "ماکس | ویرایشگر رایگان عکس آنلاین",
+    template: "%s | ماکس",
+  },
+  description:
+    "ماکس؛ ویرایشگر رایگان و ساده‌ی عکس آنلاین با پشتیبانی کامل فارسی و راست‌چین. برش، چرخش، تغییر اندازه پیکسلی، تنظیم روشنایی/کنتراست/اشباع، دانلود سریع و خروجی PNG/JPEG/WebP. محصولی از پلتفرم هوش مصنوعی فارسی ماکس.",
+  applicationName: "ماکس - ویرایشگر عکس",
+  authors: [{ name: "ماکس (Maux) - پلتفرم هوش مصنوعی فارسی" }],
+  creator: "ماکس (Maux)",
+  publisher: "ماکس (Maux)",
+  keywords: [
+    "ویرایش عکس",
+    "ادیت عکس",
+    "ویرایشگر آنلاین",
+    "ابزار ادیت تصویر",
+    "برش عکس",
+    "چرخش عکس",
+    "تغییر اندازه تصویر",
+    "خروجی PNG",
+    "خروجی JPEG",
+    "خروجی WebP",
+    "راست‌چین",
+    "فارسی",
+    "رایگان",
+    "ماکس",
+    "Maux",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "fa_IR",
+    title: "ماکس | ویرایشگر رایگان عکس آنلاین",
+    description:
+      "ماکس؛ ویرایشگر رایگان و ساده‌ی عکس آنلاین با پشتیبانی کامل فارسی و راست‌چین. برش، چرخش، تغییر اندازه پیکسلی، تنظیم روشنایی/کنتراست/اشباع، دانلود سریع و خروجی PNG/JPEG/WebP.",
+    siteName: "ماکس",
+    url: "/",
+    images: [{ url: "/favicon.ico", width: 64, height: 64, alt: "ماکس - ویرایشگر عکس" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ماکس | ویرایشگر رایگان عکس آنلاین",
+    description:
+      "ماکس؛ ویرایشگر رایگان و ساده‌ی عکس آنلاین با پشتیبانی کامل فارسی و راست‌چین. برش، چرخش، تغییر اندازه پیکسلی، تنظیم روشنایی/کنتراست/اشباع، دانلود سریع و خروجی PNG/JPEG/WebP.",
+    images: ["/favicon.ico"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large", "max-video-preview": -1 },
+  },
+  referrer: "origin-when-cross-origin",
+  formatDetection: { telephone: false, address: false, email: false },
 };
 
 export default function RootLayout({

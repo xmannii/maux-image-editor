@@ -84,6 +84,7 @@ export default function CanvasStage(props: CanvasStageProps) {
   const imgRef = useRef<HTMLImageElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const hasImage = !!image;
   const cropStartRef = useRef<{ x: number; y: number } | null>(null);
   const [isMovingCrop, setIsMovingCrop] = useState<boolean>(false);
   const moveOffsetRef = useRef<{ dx: number; dy: number } | null>(null);
@@ -506,7 +507,7 @@ export default function CanvasStage(props: CanvasStageProps) {
                 <Separator orientation="vertical" className="h-6" />
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onRotateCcw}>
+                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onRotateCcw} disabled={!hasImage}>
                       <RotateCcw className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
@@ -514,7 +515,7 @@ export default function CanvasStage(props: CanvasStageProps) {
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onRotateCw}>
+                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onRotateCw} disabled={!hasImage}>
                       <RotateCw className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
@@ -522,7 +523,7 @@ export default function CanvasStage(props: CanvasStageProps) {
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onFlipH}>
+                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onFlipH} disabled={!hasImage}>
                       <FlipHorizontal className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
@@ -530,7 +531,7 @@ export default function CanvasStage(props: CanvasStageProps) {
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onFlipV}>
+                    <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onFlipV} disabled={!hasImage}>
                       <FlipVertical className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
@@ -545,7 +546,9 @@ export default function CanvasStage(props: CanvasStageProps) {
                           variant={isCropping ? "secondary" : "secondary"}
                           size="icon"
                           className="bg-muted/50 border"  
+                          disabled={!hasImage}
                           onClick={() => {
+                            if (!hasImage) return;
                             const willEnable = !isCropping;
                             setIsCropping(willEnable);
                             if (!willEnable) {
@@ -588,7 +591,7 @@ export default function CanvasStage(props: CanvasStageProps) {
                 </Popover>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                      <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onQuickDownload}>
+                      <Button variant="secondary" className="bg-muted/50 border" size="icon" onClick={onQuickDownload} disabled={!hasImage}>
                       <Download className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
