@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
-import { Sun, Contrast, UploadCloud, Lock, Unlock, RefreshCcw, ImageDown, FileDown, Trash } from "lucide-react";
+import { Sun, Contrast, UploadCloud, Lock, Unlock, RefreshCcw, ImageDown, FileDown, Trash, Coffee } from "lucide-react";
 import { convertToPersianNumber } from "@/lib/utils";
 import { IconMaux } from "@/components/ui/icons";
 type ControlsSidebarProps = {
@@ -147,7 +147,15 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
     return (
     <aside className="w-full max-w-sm h-full border-l  overflow-hidden flex flex-col">
       <div className="p-6 border-b flex items-center justify-between">
-        <IconMaux className="h-6 w-6 ml-2 text-primary" />
+        <a
+          href="https://maux.site"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group"
+          title="maux.site"
+        >
+          <IconMaux className="h-6 w-6 ml-2 text-primary transition-colors group-hover:text-primary/80" />
+        </a>
         <h2 className="text-right text-md text-primary/70 font-semibold m-0 p-0"> ابزار ویرایش عکس ماکس</h2>
       </div>
       <div className="flex-1 overflow-y-auto scrollbar-hide">
@@ -359,6 +367,13 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
             </div>
           )}
         </div>
+      </div>
+      <div className="p-4 border-t">
+        <Button asChild className="w-full" variant="ghost">
+          <a href="http://www.coffeete.ir/mirzaei_mani" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2">
+           buy me a coffee <Coffee className="h-4 w-4" /> 
+          </a>
+        </Button>
       </div>
     </aside>
   );
