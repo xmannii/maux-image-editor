@@ -4,7 +4,7 @@
 
 A modern, fast, and simple image editor with a Persian (RTL) UI, built on Next.js 15, Tailwind CSS v4, and Shadcn UI. ✨
 
-- Hosted: `edit.maux.site`
+- [🖥️ Hosted Version](http:/editor.maux.site)
 - Brand: “Maux” — a Persian AI platform
 - About 70% of the app’s logic was authored with GPT‑5 in High Reasoning mode 🤖
 
