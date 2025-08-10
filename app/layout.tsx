@@ -11,11 +11,14 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// buy the font from fontIran and use it here https://fontiran.com/
 const yekan = localFont({
   src: "./fonts/YekanBakh-VF.woff2",
   variable: "--font-yekan",
 });
 export const metadata: Metadata = {
+  metadataBase: new URL("https://edit.maux.site"),
   title: {
     default: "ماکس | ویرایشگر رایگان عکس آنلاین",
     template: "%s | ماکس",
@@ -52,14 +55,16 @@ export const metadata: Metadata = {
       "ماکس؛ ویرایشگر رایگان و ساده‌ی عکس آنلاین با پشتیبانی کامل فارسی و راست‌چین. برش، چرخش، تغییر اندازه پیکسلی، تنظیم روشنایی/کنتراست/اشباع، دانلود سریع و خروجی PNG/JPEG/WebP.",
     siteName: "ماکس",
     url: "/",
-    images: [{ url: "/favicon.ico", width: 64, height: 64, alt: "ماکس - ویرایشگر عکس" }],
+    images: [
+      { url: "/opengraph-image.png", alt: "Maux Image Editor" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ماکس | ویرایشگر رایگان عکس آنلاین",
     description:
       "ماکس؛ ویرایشگر رایگان و ساده‌ی عکس آنلاین با پشتیبانی کامل فارسی و راست‌چین. برش، چرخش، تغییر اندازه پیکسلی، تنظیم روشنایی/کنتراست/اشباع، دانلود سریع و خروجی PNG/JPEG/WebP.",
-    images: ["/favicon.ico"],
+    images: ["/twitter-image.png"],
   },
   robots: {
     index: true,
