@@ -2,6 +2,13 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import CanvasStage, { type CropAspect } from "./CanvasStage";
 import ControlsSidebar from "./ControlsSidebar";
 
@@ -25,6 +32,7 @@ export function EditorLayout() {
   );
 
   const [renderSize, setRenderSize] = useState<{ w: number; h: number } | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const [resizeOpen, setResizeOpen] = useState<boolean>(false);
   const [targetW, setTargetW] = useState<number>(512);
@@ -106,6 +114,20 @@ export function EditorLayout() {
     }, 0);
     return () => window.clearTimeout(id);
   }, [image, captureRenderSize]);
+
+  // Detect mobile/small screens and force a notice dialog
+  useEffect(() => {
+    const checkMobile = () => {
+      const smallScreen = window.matchMedia("(max-width: 768px)").matches;
+      const uaMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+      setIsMobile(smallScreen || uaMobile);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleReduceSize = async () => {
     if (!image) return;
@@ -195,6 +217,17 @@ export function EditorLayout() {
   return (
     <TooltipProvider>
       <div className="font-yekan h-screen w-full flex bg-background">
+        <Dialog open={isMobile} onOpenChange={() => {}}>
+          <DialogContent className="sm:max-w-[420px]">
+            <DialogHeader>
+              <DialogTitle className="text-center ">این نسخه روی موبایل پشتیبانی نمی‌شود</DialogTitle>
+              <DialogDescription className="text-right" dir="auto">
+                متاسفانه در حال حاضر استفاده از این وب‌اپ تنها روی دسکتاپ امکان‌پذیر است. لطفاً با رایانه یا نمایشگر بزرگ‌تر وارد شوید.
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+
         {/* Canvas Stage */}
         <CanvasStage
           image={image}

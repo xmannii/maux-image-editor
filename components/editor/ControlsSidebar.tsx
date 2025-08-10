@@ -123,7 +123,7 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
         <div className="p-6 space-y-6">
           {!hasImage ? (
             <div
-              className={`border-2 border-dashed rounded-lg p-6 grid place-items-center text-center cursor-pointer transition-all duration-200 ${
+              className={`border-2 border-dashed border-primary/50 rounded-lg p-6 grid place-items-center text-center cursor-pointer transition-all duration-200 ${
                 isDropOver 
                   ? "border-primary bg-primary/5 scale-[1.02]" 
                   : "border-muted-foreground/40 hover:border-primary/60 hover:bg-accent/30"

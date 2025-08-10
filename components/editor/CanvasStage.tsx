@@ -18,6 +18,7 @@ import {
   Download,
   Scissors,
 } from "lucide-react";
+import { convertToPersianNumber } from "@/lib/utils";
 
 type CropRect = { x: number; y: number; width: number; height: number } | null;
 export type CropAspect = "free" | "1:1" | "3:4" | "4:3" | "16:9" | "9:16";
@@ -40,7 +41,6 @@ type CanvasStageProps = {
   setCropRect: (r: CropRect) => void;
   cropAspect: CropAspect;
   setCropAspect: (a: CropAspect) => void;
-
   // Callbacks
   onCroppedImage: (dataUrl: string) => void;
   onOpenExport?: () => void;
@@ -598,7 +598,7 @@ export default function CanvasStage(props: CanvasStageProps) {
 
               {/* Zoom indicator */}
               <div className="absolute bottom-4 left-4 z-20 rounded-full border bg-background/70 backdrop-blur px-3 py-1 text-xs text-muted-foreground shadow-sm">
-                {scalePct}%
+               {convertToPersianNumber(scalePct)}%
               </div>
 
               <TransformComponent
