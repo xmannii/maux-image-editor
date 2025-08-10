@@ -1,3 +1,5 @@
+![Maux OpenGraph Image](app/opengraph-image.png)
+
 ## Maux — Free Online Image Editor (Open Source)
 
 A modern, fast, and simple image editor with a Persian (RTL) UI, built on Next.js 15, Tailwind CSS v4, and Shadcn UI. ✨
@@ -5,6 +7,12 @@ A modern, fast, and simple image editor with a Persian (RTL) UI, built on Next.j
 - Hosted: `edit.maux.site`
 - Brand: “Maux” — a Persian AI platform
 - About 70% of the app’s logic was authored with GPT‑5 in High Reasoning mode 🤖
+
+---
+
+[☕ Buy me a coffee](http://www.coffeete.ir/mirzaei_mani)
+
+---
 
 ### Features
 - 🖼️ Figma‑like canvas with pan/zoom (react-zoom-pan-pinch)
@@ -58,6 +66,8 @@ Deploy anywhere (e.g., Vercel). The configuration is standard.
 - Undo/Redo
 - Annotation tools
 - More export presets
+
+
 
 ### Contributing 🤝
 PRs and issues are welcome. Please follow clean TypeScript conventions (clear naming, no dead code, keep UX consistent).
