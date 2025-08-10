@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Input } from "@/components/ui/input";
 import { Sun, Contrast, UploadCloud, Lock, Unlock, RefreshCcw, ImageDown, FileDown, Trash } from "lucide-react";
 import { convertToPersianNumber } from "@/lib/utils";
+import { IconMaux } from "@/components/ui/icons";
 type ControlsSidebarProps = {
   hasImage: boolean;
   isProcessing: boolean;
@@ -145,10 +146,10 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
 
     return (
     <aside className="w-full max-w-sm h-full border-l  overflow-hidden flex flex-col">
-      <div className="p-6 border-b">
-        <h2 className="text-right text-xl font-semibold">ادیت عکس ماکس</h2>
+      <div className="p-6 border-b flex items-center justify-between">
+        <IconMaux className="h-6 w-6 ml-2 text-primary" />
+        <h2 className="text-right text-md text-primary/70 font-semibold m-0 p-0"> ابزار ویرایش عکس ماکس</h2>
       </div>
-      
       <div className="flex-1 overflow-y-auto scrollbar-hide">
         <div className="p-6 space-y-6">
           {!hasImage ? (
