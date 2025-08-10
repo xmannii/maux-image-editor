@@ -44,3 +44,4 @@ next-env.d.ts
 # ignore the font from app/fonts 
 
 /app/fonts/YekanBakh-VF.woff2
+.vercel

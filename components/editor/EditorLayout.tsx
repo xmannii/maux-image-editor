@@ -129,25 +129,6 @@ export function EditorLayout() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const handleReduceSize = async () => {
-    if (!image) return;
-    setIsProcessing(true);
-    try {
-      const response = await fetch("/api/resize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image }),
-      });
-      if (!response.ok) throw new Error("Failed to resize image");
-      const data = await response.json();
-      setImage(data.image);
-      setSizeComparison(data.sizeComparison);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
   const handleDownload = () => {
     const canvas = getRenderedCanvasRef.current?.();
