@@ -255,6 +255,7 @@ export default function ControlsSidebar(props: ControlsSidebarProps) {
               </div>
 
 
+
               {/* Output size with centered lock */}
               <div className="space-y-3">
                 <h4 className="text-right font-semibold text-sm">ابعاد خروجی</h4>

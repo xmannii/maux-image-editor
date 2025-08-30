@@ -19,6 +19,7 @@ A modern, fast, and simple image editor with a Persian (RTL) UI, built on Next.j
 - ✂️ Advanced cropping: presets (1:1, 3:4, 4:3, 16:9, 9:16), free crop, draggable selection, corner/edge handles
 - 🔁 Rotate and flip (horizontal/vertical)
 - 🎚️ Adjustments: brightness, contrast, saturation
+- 🤖 AI-powered image editing with Google Gemini 2.5 Flash
 - 📥 Drag & drop + paste from clipboard
 - 💾 Quick download + export to PNG / JPEG / WebP with quality control
 - 📏 Pixel resize with aspect lock and cover‑fit (fills target size with smart cropping)
@@ -46,8 +47,21 @@ Note: The local font is referenced in `app/layout.tsx` via `next/font/local`. If
 
 Prereqs: Node.js 18+ and pnpm
 
+1. Install dependencies:
 ```bash
 pnpm install
+```
+
+2. Set up environment variables:
+Create a `.env.local` file in the root directory and add your Replicate API token:
+```bash
+REPLICATE_API_TOKEN=your_replicate_api_token_here
+```
+
+Get your API token from: https://replicate.com/account/api-tokens
+
+3. Start the development server:
+```bash
 pnpm dev
 # open http://localhost:3000
 ```

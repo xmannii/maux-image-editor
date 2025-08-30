@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import CanvasStage, { type CropAspect } from "./CanvasStage";
 import ControlsSidebar from "./ControlsSidebar";
 
@@ -27,17 +28,15 @@ export function EditorLayout() {
   const [flipHorizontal, setFlipHorizontal] = useState<boolean>(false);
   const [flipVertical, setFlipVertical] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [isAiEditing, setIsAiEditing] = useState<boolean>(false);
+  const [aiPrompt, setAiPrompt] = useState<string>("");
+  const [showAiPrompt, setShowAiPrompt] = useState<boolean>(false);
   const [sizeComparison, setSizeComparison] = useState<SizeComparison | null>(
     null
   );
 
   const [renderSize, setRenderSize] = useState<{ w: number; h: number } | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  const [resizeOpen, setResizeOpen] = useState<boolean>(false);
-  const [targetW, setTargetW] = useState<number>(512);
-  const [targetH, setTargetH] = useState<number>(512);
-  const [resizeMode, setResizeMode] = useState<"cover" | "contain">("cover");
 
   const [isCropping, setIsCropping] = useState<boolean>(false);
   const [cropRect, setCropRect] = useState<
@@ -66,11 +65,14 @@ export function EditorLayout() {
         setImage(e.target?.result as string);
         setBrightness(100);
         setContrast(100);
-      setSaturation(100);
-      setRotationDeg(0);
-      setFlipHorizontal(false);
-      setFlipVertical(false);
+        setSaturation(100);
+        setRotationDeg(0);
+        setFlipHorizontal(false);
+        setFlipVertical(false);
         setSizeComparison(null);
+        setShowAiPrompt(true);
+        setAiPrompt("");
+        toast.success("تصویر با موفقیت بارگذاری شد!");
       };
     reader.readAsDataURL(file);
   };
@@ -137,6 +139,7 @@ export function EditorLayout() {
     link.download = "edited-image.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
+    toast.success("تصویر با موفقیت دانلود شد!");
   };
 
   const handleExport = (format: "png" | "jpeg" | "webp", quality: number) => {
@@ -149,6 +152,62 @@ export function EditorLayout() {
     link.download = `edited-image.${format}`;
     link.href = dataURL;
     link.click();
+    toast.success(`تصویر با فرمت ${format.toUpperCase()} دانلود شد!`);
+  };
+
+
+
+  const handleAiEdit = async () => {
+    if (!image || !aiPrompt.trim() || isAiEditing) return;
+    
+    setIsAiEditing(true);
+    toast.loading("در حال پردازش تصویر...", {
+      id: "ai-edit",
+    });
+    
+    try {
+      const response = await fetch("/api/ai-edit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          imageDataUrl: image,
+          prompt: aiPrompt,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("خطا در پردازش تصویر");
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        if (result.editedImage) {
+          // If we got an edited image, replace the current image
+          setImage(result.editedImage);
+          setAiPrompt("");
+          // Keep the prompt input visible for further edits
+          toast.success("تصویر با موفقیت ویرایش شد!", {
+            id: "ai-edit",
+          });
+        } else if (result.analysis) {
+          // Fallback to showing analysis
+          toast.info(`تحلیل AI:\n\n${result.analysis}`, {
+            id: "ai-edit",
+            duration: 8000,
+          });
+          setAiPrompt("");
+        }
+      }
+    } catch (error) {
+      console.error("AI editing error:", error);
+      toast.error("خطا در پردازش تصویر", {
+        id: "ai-edit",
+      });
+    } finally {
+      setIsAiEditing(false);
+    }
   };
 
   const handleRemoveImage = () => {
@@ -162,6 +221,9 @@ export function EditorLayout() {
     setIsCropping(false);
     setCropRect(null);
     setCropAspect("free");
+    setAiPrompt("");
+    setShowAiPrompt(false);
+    toast.info("تصویر حذف شد");
   };
 
   const resetAdjustments = () => {
@@ -225,13 +287,17 @@ export function EditorLayout() {
           setCropRect={setCropRect}
           cropAspect={cropAspect}
           setCropAspect={setCropAspect}
+          showAiPrompt={showAiPrompt}
+          aiPrompt={aiPrompt}
+          setAiPrompt={setAiPrompt}
+          isAiEditing={isAiEditing}
+          onAiEdit={handleAiEdit}
           onCroppedImage={(dataUrl) => {
             setImage(dataUrl);
             setRotationDeg(0);
             setFlipHorizontal(false);
             setFlipVertical(false);
           }}
-
           onQuickDownload={handleDownload}
           onRotateCw={() => setRotationDeg((d) => (d + 90) % 360)}
           onRotateCcw={() => setRotationDeg((d) => (d + 270) % 360)}

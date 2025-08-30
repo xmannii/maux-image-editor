@@ -17,6 +17,7 @@ import {
   Maximize2,
   Download,
   Scissors,
+  ArrowUp,
 } from "lucide-react";
 import { convertToPersianNumber } from "@/lib/utils";
 
@@ -41,6 +42,14 @@ type CanvasStageProps = {
   setCropRect: (r: CropRect) => void;
   cropAspect: CropAspect;
   setCropAspect: (a: CropAspect) => void;
+  
+  // AI editing state
+  showAiPrompt: boolean;
+  aiPrompt: string;
+  setAiPrompt: (prompt: string) => void;
+  isAiEditing: boolean;
+  onAiEdit: () => void;
+  
   // Callbacks
   onCroppedImage: (dataUrl: string) => void;
   onOpenExport?: () => void;
@@ -70,6 +79,11 @@ export default function CanvasStage(props: CanvasStageProps) {
     setCropRect,
     cropAspect,
     setCropAspect,
+    showAiPrompt,
+    aiPrompt,
+    setAiPrompt,
+    isAiEditing,
+    onAiEdit,
     onCroppedImage,
     onOpenExport,
     onQuickDownload,
@@ -770,6 +784,41 @@ export default function CanvasStage(props: CanvasStageProps) {
           );
         }}
       </TransformWrapper>
+      
+             {/* AI Prompt Input */}
+       {showAiPrompt && hasImage && (
+         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30">
+           <div className="flex items-center gap-3 bg-card  backdrop-blur border rounded-full px-6 py-4 shadow-lg min-w-[600px] max-w-[900px]">
+            <input
+              type="text"
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              placeholder="درخواست ویرایش تصویر خود را بنویسید..."
+              dir="rtl"
+              className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  onAiEdit();
+                }
+              }}
+              disabled={isAiEditing}
+            />
+                         <Button
+               onClick={onAiEdit}
+               disabled={!aiPrompt.trim() || isAiEditing}
+               size="icon"
+               className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full w-10 h-10"
+             >
+               {isAiEditing ? (
+                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+               ) : (
+                 <ArrowUp className="h-5 w-5" />
+               )}
+             </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
